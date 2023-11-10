@@ -1,0 +1,17 @@
+{
+  "product": "shopping_list_maing01",
+  "version": "0.1.0",
+  "license": "License Commercial",
+  "description": {
+    "en": "",
+    "cs": ""
+  },
+  "devkit": {
+    "development": {
+      "appBoxLocationUri": "----- VALUE REQUIRED -----",
+      "appDeploymentUri": null
+    }
+  },
+  "shopping_list_maing01-hi": {},
+  "shopping_list_maing01-server": {}
+}
