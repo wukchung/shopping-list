@@ -83,7 +83,7 @@ let Home = createVisualComponent({
   },
 });
 
-Home = withRoute(Home, { authenticated: true });
+Home = withRoute(Home, { authenticated: false });
 
 //@@viewOn:exports
 export { Home };
