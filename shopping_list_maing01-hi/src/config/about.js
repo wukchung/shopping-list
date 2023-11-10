@@ -12,35 +12,24 @@ const About = {
     },
     authorities: [
       {
-        name: "Name Surname",
+        name: "Martin Havelka",
         uri: "https://www.unicorn.com/",
       },
     ],
   },
   leadingAuthors: [
     {
-      name: "Some Name",
+      name: "Martin Havelka",
       uuIdentity: "4-4-1",
       role: "Chief Business Architect & Stakeholder",
     },
     {
-      name: "Other Name",
+      name: "Martin Havelka",
       uuIdentity: "4-4-1",
       role: "Head of Development",
     },
   ],
-  otherAuthors: [
-    {
-      name: "Your Name",
-      uuIdentity: "4-4-1",
-      role: "Developer",
-    },
-    {
-      name: "More Names",
-      uuIdentity: "4-4-1",
-      role: "Developer",
-    },
-  ],
+  otherAuthors: [],
   usedTechnologies: {
     technologies: [
       <Uu5Elements.Link key="uaf" href="https://docs.plus4u.net/uaf" target="_blank">
