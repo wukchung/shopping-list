@@ -28,6 +28,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import Divider from '@mui/material/Divider';
 import UserAccessList from "../components/user-access-list";
+import { useShoppingList } from '../contexts/ShoppingListContext';
+
+import { useParams } from 'react-router-dom';
 
 //@@viewOff:imports
 
@@ -124,6 +127,8 @@ let ShoppingListDetail = createVisualComponent({
   render(props) {
     //@@viewOn:private
     const { awid } = useSubApp();
+    const { listId } = props.params || {};
+    const parsedListId = parseInt(listId);
     const { state: sessionState } = useSession();
     const { data: systemData } = useSystemData();
     const {
@@ -146,11 +151,9 @@ let ShoppingListDetail = createVisualComponent({
     const { state } = useDynamicLibraryComponent("Plus4U5.App.ShoppingListDetail");
     const legacyComponentsReady = !state.startsWith("pending");
 
-    // State to manage shopping list items
-    const [shoppingList, setShoppingList] = React.useState([
-      { id: 1, name: 'Milk', done: false },
-      { id: 2, name: 'Bread', done: false },
-    ]);
+    const { shoppingLists, setShoppingLists } = useShoppingList();
+
+    const shoppingList = shoppingLists.find(list => list.id === parsedListId);
 
     const [newItem, setNewItem] = React.useState("");
     const [addingItem, setAddingItem] = React.useState(false);
@@ -163,7 +166,23 @@ let ShoppingListDetail = createVisualComponent({
           name: newItem,
           done: false,
         };
-        setShoppingList([...shoppingList, newItemObject]);
+
+        // Create a new updated array of shopping lists
+        const updatedShoppingLists = shoppingLists.map(list => {
+          // For the list we are modifying, create a new object with updated items
+          if (list.id === shoppingList.id) {
+            console.log("FOUND");
+            return {
+              ...list,
+              items: [...list.items, newItemObject]
+            };
+          }
+          // For all other lists, return them as they are
+          return list;
+        });
+        console.log(updatedShoppingLists);
+        // Update the state with the new array of shopping lists
+        setShoppingLists(updatedShoppingLists);
         setNewItem("");
       }
       setAddingItem(false);
@@ -175,7 +194,7 @@ let ShoppingListDetail = createVisualComponent({
     };
 
     // Filter logic for list items
-    const visibleItems = filterDone ? shoppingList.filter(item => !item.done) : shoppingList;
+    const visibleItems = filterDone ? shoppingList.items.filter(item => !item.done) : shoppingList.items;
 
     const handleNewItemChange = (event) => {
       setNewItem(event.target.value);
@@ -189,20 +208,54 @@ let ShoppingListDetail = createVisualComponent({
 
     // Function to toggle done/undone
     const toggleItemStatus = (itemId) => {
-      const updatedList = shoppingList.map(item =>
-        item.id === itemId ? { ...item, done: !item.done } : item
-      );
-      setShoppingList(updatedList);
+      // Map over the shoppingLists to update the specific list and its items
+      const updatedShoppingLists = shoppingLists.map(list => {
+        if (list.id === shoppingList.id) {
+          // Map over the items of the specific list to update the status of the item
+          const updatedItems = list.items.map(item =>
+            item.id === itemId ? { ...item, done: !item.done } : item
+          );
+
+          // Return a new object for the updated list with the updated items
+          return {
+            ...list,
+            items: updatedItems
+          };
+        }
+        // Return all other lists as they are
+        return list;
+      });
+
+      // Update the shoppingLists state with the new array
+      setShoppingLists(updatedShoppingLists);
     };
+
 
     // Function to delete an item
     const deleteItem = (itemId) => {
-      const updatedList = shoppingList.filter(item => item.id !== itemId);
-      setShoppingList(updatedList);
+      // Map over the shoppingLists to update the specific list
+      const updatedShoppingLists = shoppingLists.map(list => {
+        if (list.id === shoppingList.id) {
+          // Create a new array for the list's items, excluding the item to be deleted
+          const updatedItems = list.items.filter(item => item.id !== itemId);
+
+          // Return a new object for the updated list with the updated items
+          return {
+            ...list,
+            items: updatedItems
+          };
+        }
+        // Return all other lists as they are
+        return list;
+      });
+
+      // Update the shoppingLists state with the new array
+      setShoppingLists(updatedShoppingLists);
     };
 
+
     // State for shopping list name and edit mode
-    const [shoppingListName, setShoppingListName] = useState('My Shopping List');
+    const [shoppingListName, setShoppingListName] = useState(shoppingList.name);
     const [isEditingName, setIsEditingName] = useState(false);
 
     // Function to handle name change
@@ -230,6 +283,7 @@ let ShoppingListDetail = createVisualComponent({
     const attrs = Utils.VisualComponent.getAttrs(props);
     return (
       <div {...attrs} style={{ backgroundColor: '#f0f0f0' }}>
+        <RouteBar />
 
         <Grid container justifyContent="center" style={{ height: '100vh' }}>
           {/* Empty Grid item for spacing */}

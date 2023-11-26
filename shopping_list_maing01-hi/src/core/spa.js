@@ -11,14 +11,16 @@ import Home from "../routes/home.js";
 //@@viewOn:constants
 const About = Utils.Component.lazy(() => import("../routes/about.js"));
 const ShoppingListDetail = Utils.Component.lazy(() => import("../routes/shopping-list-detail.js"));
+const ShoppingListOverview = Utils.Component.lazy(() => import("../routes/shopping-list-overview.js"));
 const InitAppWorkspace = Utils.Component.lazy(() => import("../routes/init-app-workspace.js"));
 const ControlPanel = Utils.Component.lazy(() => import("../routes/control-panel.js"));
 
 const ROUTE_MAP = {
-  "": { redirect: "home" },
+  "": { redirect: "list" },
   home: (props) => <Home {...props} />,
   about: (props) => <About {...props} />,
   detail: (props) => <ShoppingListDetail {...props} />,
+  list: (props) => <ShoppingListOverview {...props} />,
   "sys/uuAppWorkspace/initUve": (props) => <InitAppWorkspace {...props} />,
   controlPanel: (props) => <ControlPanel {...props} />,
   "*": () => (
