@@ -1,0 +1,23 @@
+version: '3.1'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    links:
+      - mongo
+    environment:
+      - MONGO_DB_URI=mongodb://mongo:27017/mydb
+    volumes:
+      - .:/usr/src/app
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+volumes:
+  mongodata:
