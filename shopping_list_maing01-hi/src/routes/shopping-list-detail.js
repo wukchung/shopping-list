@@ -128,6 +128,7 @@ let ShoppingListDetail = createVisualComponent({
     //@@viewOn:private
     const { awid } = useSubApp();
     const { listId } = props.params || {};
+    console.log(listId     );
     const parsedListId = parseInt(listId);
     const { state: sessionState } = useSession();
     const { data: systemData } = useSystemData();

@@ -36,8 +36,9 @@ exports.getAllShoppingLists = async (req, res) => {
 
 exports.createShoppingList = async (req, res) => {
   const { error, value } = createShoppingListSchema.validate(req.body);
+  console.log(req.body)
   if (error) {
-    return res.status(401).json({ error: { code: errorCodes.INVALID_INPUT, message: error.details[0].message } });
+    return res.status(400).json({ error: { code: errorCodes.INVALID_INPUT, message: error.details[0].message } });
   }
 
   const { name } = value;
