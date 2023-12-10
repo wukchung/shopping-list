@@ -2,12 +2,19 @@ const express = require('express');
 const shoppingListController = require('../controllers/shoppingListController');
 const router = express.Router();
 
+// shoppingList routes
+router.get('/', shoppingListController.getAllShoppingLists);
 router.post('/', shoppingListController.createShoppingList);
-router.put('/', shoppingListController.updateShoppingList);
-router.delete('/', shoppingListController.deleteShoppingList);
-router.post('/item', shoppingListController.addItemToList);
-router.delete('/item', shoppingListController.removeItemFromList);
-router.put('/share', shoppingListController.shareShoppingList);
-router.delete('/share', shoppingListController.unshareShoppingList);
+router.put('/:listId', shoppingListController.updateShoppingList);
+router.delete('/:listId', shoppingListController.deleteShoppingList);
+router.get('/:listId', shoppingListController.getShoppingListItems);
+
+// item routes
+router.post('/:listId/item', shoppingListController.addItemToList);
+router.delete('/:listId/item/:itemId', shoppingListController.removeItemFromList);
+
+// share routes
+router.put('/:listId/share', shoppingListController.shareShoppingList);
+router.delete('/:listId/share', shoppingListController.unshareShoppingList);
 
 module.exports = router;

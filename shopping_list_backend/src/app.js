@@ -2,6 +2,8 @@ const express = require('express');
 const {winstonLogger} = require('./middlewares/logger');
 const shoppingListRoutes = require('./routes/shoppingListRoutes');
 
+require('./db');
+
 const app = express();
 
 app.use(express.json()); // Middleware for JSON request parsing
