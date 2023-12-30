@@ -4,6 +4,9 @@ import Plus4U5App from "uu_plus4u5g02-app";
 
 import Config from "./config/config.js";
 import importLsi from "../lsi/import-lsi.js";
+
+import { ThemeContext } from "../contexts/ThemeContext";
+import { useContext } from "react";
 //@@viewOff:imports
 
 //@@viewOn:constants
@@ -32,22 +35,12 @@ const RouteBar = createVisualComponent({
     //@@viewOn:private
     const [, setRoute] = useRoute();
 
+    const { theme, toggleTheme } = useContext(ThemeContext);
     const appActionList = [
       { children: <Lsi import={importLsi} path={["Menu", "home"]} />, onClick: () => setRoute("home") },
       {
-        children: <Lsi import={importLsi} path={["Menu", "about"]} />,
-        onClick: () => setRoute("about"),
-        collapsed: true,
-      },
-      {
-        children: <Lsi import={importLsi} path={["Menu", "list"]} />,
-        onClick: () => setRoute("list"),
-        collapsed: true,
-      },
-      {
-        children: <Lsi import={importLsi} path={["Menu", "detail"]} />,
-        onClick: () => setRoute("detail"),
-        collapsed: true,
+        children: <Lsi import={importLsi} path={["Menu", "themeToggle"]} />,
+        onClick: () => toggleTheme(),
       },
     ];
     //@@viewOff:private

@@ -6,6 +6,10 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import {
+  Lsi,
+} from "uu5g05";
+import importLsi from "../lsi/import-lsi.js";
 
 const UserAccessList = () => {
   // Hardcoded user data
@@ -38,12 +42,12 @@ const UserAccessList = () => {
     <div>
       {!addingUser && (
         <Button variant="contained" onClick={() => setAddingUser(true)}>
-          Share
+          <Lsi import={importLsi} path={["AccessList", "share"]} />
         </Button>
       )}
       {addingUser && (
         <TextField
-          label="User Email"
+          label=<Lsi import={importLsi} path={["AccessList", "  "]} />
           value={newUserEmail}
           onChange={(e) => setNewUserEmail(e.target.value)}
           onBlur={handleAddUser}

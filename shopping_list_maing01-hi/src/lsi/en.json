@@ -33,6 +33,20 @@
     "home": "Welcome",
     "about": "About Application",
     "detail": "Shopping list detail",
-    "list": "Shopping lists"
+    "list": "Shopping lists",
+    "themeToggle": "Switch theme"
+  },
+  "ShoppingList": {
+    "listTitle": "Shopping lists",
+    "open": "Open",
+    "deleteConfirmText": "Are you sure you want to delete this shopping list?",
+    "deleteCancel": "Cancel",
+    "deleteConfirm": "Confirm",
+    "addList": "Add list",
+    "addNewItem": "Add new item"
+  },
+  "AccessList": {
+    "share": "Share",
+    "userEmail": "User email"
   }
 }

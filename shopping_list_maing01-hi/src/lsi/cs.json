@@ -33,6 +33,20 @@
     "home": "Vítejte",
     "about": "O aplikaci",
     "detail": "Detail nákupního seznamu",
-    "list": "Nákupní seznamy"
+    "list": "Nákupní seznamy",
+    "themeToggle": "Změnit motiv"
+  },
+  "ShoppingList": {
+    "listTitle": "Nákupní seznamy",
+    "open": "Otevřít",
+    "deleteConfirmText": "Opravdu chcete smazat tento nákupní seznam?",
+    "deleteCancel": "Zrušit",
+    "deleteConfirm": "Potvrdit",
+    "addList": "Přidat seznam",
+    "addNewItem": "Přidat novou položku"
+  },
+  "AccessList": {
+    "share": "Sdílet",
+    "userEmail": "Email uživatele"
   }
 }

@@ -2,6 +2,7 @@ import { AppContainer } from "react-hot-loader";
 import { Environment, Utils } from "uu5g05";
 import "uu5g04"; // required for proper integration with uu5g05
 import { ShoppingListProvider } from './contexts/ShoppingListContext';
+import { ThemeProvider } from './contexts/ThemeContext';
 import Spa from "./core/spa.js";
 
 // propagate app version into environment
@@ -22,12 +23,14 @@ function render(targetElementId) {
   _targetElementId = targetElementId;
 
   Utils.Dom.render(
-    <ShoppingListProvider>
-      <AppContainer>
+    <ThemeProvider>
+      <ShoppingListProvider>
+        <AppContainer>
           <Spa />
-      </AppContainer>
-    </ShoppingListProvider>,
-    document.getElementById(targetElementId)
+        </AppContainer>
+      </ShoppingListProvider>
+    </ThemeProvider>,
+    document.getElementById(targetElementId),
   );
 }
 

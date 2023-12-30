@@ -6,13 +6,13 @@ import {
 } from "uu5g05";
 import Plus4U5App, { withRoute } from "uu_plus4u5g02-app";
 import { useSubApp, useSystemData } from "uu_plus4u5g02";
-import React from 'react';
-
+import React, { useContext } from "react";
 import Config from "./config/config.js";
 import Css from "./css/common";
 import Grid from '@mui/material/Grid';
 import ShoppingListsOverview from "../components/shopping-lists-overview";
-import RouteBar from "../core/route-bar"; // Ensure the path is correct
+import RouteBar from "../core/route-bar";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 //@@viewOff:imports
 
@@ -60,21 +60,23 @@ let ShoppingListOverview = createVisualComponent({
 
     //@@viewOn:render
     const attrs = Utils.VisualComponent.getAttrs(props);
+
+    const { theme } = useContext(ThemeContext);// Manage theme state
+
     return (
-      <div {...attrs} style={{ backgroundColor: '#f0f0f0' }}>
-        <RouteBar />
+      <div key={theme}>
+        <div {...attrs} className={Css.sideCol()}>
+          <RouteBar />
 
-        <Grid container justifyContent="center" style={{ height: '100vh' }}>
+          <Grid container justifyContent="center" style={{ height: "100vh" }}>
+            {/* Shopping Lists Overview Component */}
+            <Grid item xs={12} md={6} className={Css.centerCol()} style={{ padding: "20px" }}>
+              <ShoppingListsOverview />
+            </Grid>
 
-          {/* Shopping Lists Overview Component */}
-          <Grid item xs={12} md={6} style={{ backgroundColor: 'white', padding: '20px' }}>
-            <ShoppingListsOverview />
+            {/* Optionally, additional content or grid items can be added here */}
           </Grid>
-
-          {/* Optionally, additional content or grid items can be added here */}
-
-        </Grid>
-
+        </div>
       </div>
     );
     //@@viewOff:render

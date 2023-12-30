@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
-import {createVisualComponent, useRoute} from 'uu5g05';
+import { createVisualComponent, useRoute, Lsi } from "uu5g05";
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -17,6 +17,8 @@ import CardActions from '@mui/material/CardActions';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useShoppingList } from '../contexts/ShoppingListContext';
+import importLsi from "../lsi/import-lsi.js";
+import Css from "../routes/css/common";
 
 //@@viewOff:imports
 
@@ -98,25 +100,26 @@ let ShoppingListsOverview = createVisualComponent({
     //@@viewOn:render
     return (
       <div>
-        <h1>Shopping Lists</h1>
-        <Button style={{ marginBottom: '20px' }} variant="contained" color="primary" onClick={handleOpenModal}>
+        <h1 className={Css.title()}>
+          <Lsi import={importLsi} path={["ShoppingList", "listTitle"]} />
+        </h1>
+        <Button style={{ marginBottom: "20px" }} variant="contained" color="primary" onClick={handleOpenModal}>
           Add New List
         </Button>
-
 
         <Grid container spacing={2}>
           {shoppingLists.map((list) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={list.id}>
               <Card>
-                <CardContent>
+                <CardContent className={Css.card()}>
                   <Typography variant="h5" component="h2">
                     {list.name}
                   </Typography>
                   {/* Additional list details can go here */}
                 </CardContent>
-                <CardActions>
-                  <Button size="small" color="primary" onClick={() => setRoute(`detail?listId=${list.id}`)}>
-                    Open
+                <CardActions className={Css.cardAction()}>
+                  <Button size="small" onClick={() => setRoute(`detail?listId=${list.id}`)}>
+                    <Lsi import={importLsi} path={["ShoppingList", "open"]} />
                   </Button>
                   <IconButton onClick={() => handleDeleteClick(list.id)}>
                     <DeleteIcon />
@@ -131,9 +134,9 @@ let ShoppingListsOverview = createVisualComponent({
         <Modal
           open={isModalOpen}
           onClose={handleCloseModal}
-          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} // Center the modal
+          style={{ display: "flex", alignItems: "center", justifyContent: "center" }} // Center the modal
         >
-          <div style={{ backgroundColor: 'white', padding: '20px', outline: 'none', borderRadius: '4px' }}>
+          <div style={{ backgroundColor: "black", padding: "20px", outline: "none", borderRadius: "4px" }}>
             {/* Modal content: form to add a new list */}
             <form onSubmit={handleAddList}>
               <TextField
@@ -145,30 +148,27 @@ let ShoppingListsOverview = createVisualComponent({
                 fullWidth
                 required
               />
-              <Button type="submit" color="primary" variant="contained" style={{ marginTop: '20px' }}>
-                Add List
+              <Button type="submit" color="primary" variant="contained" style={{ marginTop: "20px" }}>
+                <Lsi import={importLsi} path={["ShoppingList", "addList"]} />
               </Button>
             </form>
           </div>
         </Modal>
 
         {/* Confirmation dialog for deletion */}
-        <Dialog
-          open={deleteConfirmOpen}
-          onClose={handleCloseDeleteConfirm}
-        >
+        <Dialog open={deleteConfirmOpen} onClose={handleCloseDeleteConfirm}>
           <DialogTitle>{"Confirm Deletion"}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Are you sure you want to delete this shopping list?
+              <Lsi import={importLsi} path={["ShoppingList", "deleteConfirmText"]} />
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDeleteConfirm} color="primary">
-              Cancel
+              <Lsi import={importLsi} path={["ShoppingList", "deleteCancel"]} />
             </Button>
             <Button onClick={handleConfirmDelete} color="primary" autoFocus>
-              Confirm
+              <Lsi import={importLsi} path={["ShoppingList", "deleteConfirm"]} />
             </Button>
           </DialogActions>
         </Dialog>
