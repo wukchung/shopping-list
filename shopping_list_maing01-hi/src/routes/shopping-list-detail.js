@@ -31,6 +31,7 @@ import UserAccessList from "../components/user-access-list";
 import { useShoppingList } from '../contexts/ShoppingListContext';
 import Css from "./css/common";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 
 import { useParams } from 'react-router-dom';
 
@@ -205,6 +206,18 @@ let ShoppingListDetail = createVisualComponent({
       setIsEditingName(false);
     };
     const { theme } = useContext(ThemeContext); // Manage theme state
+
+    // Data preparation for the chart
+    const completedItemsCount = shoppingList.items.filter((item) => item.done).length;
+    const pendingItemsCount = shoppingList.items.length - completedItemsCount;
+    const chartData = [
+      { name: "Completed", value: completedItemsCount },
+      { name: "Pending", value: pendingItemsCount },
+    ];
+
+    // Define colors for the chart
+    const COLORS = ["#0088FE", "#FF8042"];
+
     //@@viewOff:private
 
     //@@viewOn:interface
@@ -295,6 +308,29 @@ let ShoppingListDetail = createVisualComponent({
                   </ListItem>
                 ))}
               </List>
+
+              {/* Pie Chart */}
+              <h2>Done tasks statistics</h2>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <PieChart width={400} height={400}>
+                  <Pie
+                    data={chartData}
+                    cx={200}
+                    cy={200}
+                    innerRadius={60}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    paddingAngle={5}
+                    dataKey="value"
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </PieChart>
+              </div>
             </Grid>
 
             <Grid item className={Css.divider()}>
