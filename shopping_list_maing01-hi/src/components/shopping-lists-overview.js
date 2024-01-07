@@ -19,6 +19,8 @@ import Typography from '@mui/material/Typography';
 import { useShoppingList } from '../contexts/ShoppingListContext';
 import importLsi from "../lsi/import-lsi.js";
 import Css from "../routes/css/common";
+import LinearProgress from "@mui/material/LinearProgress";
+import Box from "@mui/material/Box";
 
 //@@viewOff:imports
 
@@ -108,26 +110,43 @@ let ShoppingListsOverview = createVisualComponent({
         </Button>
 
         <Grid container spacing={2}>
-          {shoppingLists.map((list) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={list.id}>
-              <Card>
-                <CardContent className={Css.card()}>
-                  <Typography variant="h5" component="h2">
-                    {list.name}
-                  </Typography>
-                  {/* Additional list details can go here */}
-                </CardContent>
-                <CardActions className={Css.cardAction()}>
-                  <Button size="small" onClick={() => setRoute(`detail?listId=${list.id}`)}>
-                    <Lsi import={importLsi} path={["ShoppingList", "open"]} />
-                  </Button>
-                  <IconButton onClick={() => handleDeleteClick(list.id)}>
-                    <DeleteIcon />
-                  </IconButton>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
+          {shoppingLists.map((list) => {
+             const totalItems = list.items.length;
+             const completedItems = list.items.filter((item) => item.done).length;
+             const completionPercentage = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
+
+            return (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={list.id}>
+                <Card>
+                  <CardContent className={Css.card()}>
+                    <Typography variant="h5" component="h2">
+                      {list.name}
+                    </Typography>
+                    <Box display="flex" alignItems="center">
+                      <Box width="100%" mr={1}>
+                        <LinearProgress variant="determinate" value={completionPercentage} />
+                      </Box>
+                      <Box minWidth={35}>
+                        <Typography
+                          variant="body2"
+                          color="textSecondary"
+                        >{`${completedItems}/${totalItems}`}</Typography>
+                      </Box>
+                    </Box>
+                    {/* Additional list details can go here */}
+                  </CardContent>
+                  <CardActions className={Css.cardAction()}>
+                    <Button size="small" onClick={() => setRoute(`detail?listId=${list.id}`)}>
+                      <Lsi import={importLsi} path={["ShoppingList", "open"]} />
+                    </Button>
+                    <IconButton onClick={() => handleDeleteClick(list.id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </CardActions>
+                </Card>
+              </Grid>
+            );
+          })}
         </Grid>
 
         {/* Modal for adding new shopping list */}

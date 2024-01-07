@@ -64,7 +64,7 @@ exports.updateShoppingList = async (req, res) => {
   }
 
   const { listId, name } = value;
-
+  console.log("test");
   try {
     const updatedList = await ShoppingList.findByIdAndUpdate(listId, { name }, { new: true });
     if (!updatedList) {

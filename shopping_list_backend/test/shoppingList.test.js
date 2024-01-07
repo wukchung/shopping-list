@@ -65,25 +65,18 @@ describe('Shopping List Controller Tests', () => {
 // Test for getting all shopping lists
   describe('GET /shopping-list', () => {
     it('should get all shopping lists with correct items', async () => {
-      const response = await supertest(app)
-        .get(`/shopping-list`)
-        .expect(200);
+      const response = await supertest(app).get(`/shopping-list`).expect(200);
 
-      expect(response.body).to.be.an('array');
+      expect(response.body).to.be.an("array").with.lengthOf(1);
+
       // Find the specific list by mockListId
-      const specificList = response.body.find(list => list.listId === mockListId);
+      const specificList = response.body.find(
+        (list) => list.listId === mockListId
+      );
 
       // Check if the specific list exists
       expect(specificList).to.not.be.undefined;
-
-      expect(specificList).to.have.property('name', shoppingListName);
-
-      // // Check if the specific list has exactly one item
-      // expect(specificList.items).to.be.an('array').with.lengthOf(1);
-      //
-      // // Check the name of the item in the list
-      // const item = specificList.items[0];
-      // expect(item).to.have.property('itemName', shoppingListName); // Replace 'Test Item' with the actual test item name
+      expect(specificList).to.have.property("name", shoppingListName);
     });
   });
 
@@ -161,3 +154,75 @@ describe('Shopping List Controller Tests', () => {
     });
   });
 });
+
+
+describe('Shopping List Controller "Not Happy" Path Tests', () => {
+  const incorrectId = "999999";
+  const nonExistentId = "507f1f77bcf86cd799439011"; // Example non-existent ID for negative tests
+
+  // Test for creating a shopping list with invalid data
+  it("should not create a shopping list without a name", async () => {
+    await supertest(app)
+      .post("/shopping-list")
+      .send({ wrongProperty: "Some Name" }) // Incorrect property
+      .expect(400); // Bad Request
+  });
+
+  // Test for updating a incorect list ID
+  it("should not update incorrect list ID", async () => {
+    await supertest(app)
+      .put(`/shopping-list/${incorrectId}`)
+      .send({ name: "Updated List" })
+      .expect(400); // Not Found
+  });
+
+  // Test for updating a non existent ID
+  it("should not update a non-existent shopping list", async () => {
+    await supertest(app)
+      .put(`/shopping-list/${nonExistentId}`)
+      .send({ name: "Updated List" })
+      .expect(404); // Not Found
+  });
+
+  // Test for getting items of a non-existent shopping list
+  it("should not get items of a non-existent shopping list", async () => {
+    await supertest(app).get(`/shopping-list/${nonExistentId}`).expect(404); // Not Found
+  });
+
+  // Test for adding an item to a non-existent shopping list
+  it("should not add an item to a non-existent shopping list", async () => {
+    await supertest(app)
+      .post(`/shopping-list/${nonExistentId}/item`)
+      .send({ itemName: "Test Item" })
+      .expect(404); // Not Found
+  });
+
+  // Test for removing an item from a non-existent shopping list
+  it("should not remove an item from a non-existent shopping list", async () => {
+    await supertest(app)
+      .delete(`/shopping-list/${nonExistentId}/item/${nonExistentId}`)
+      .expect(404); // Not Found
+  });
+
+  // Test for sharing a non-existent shopping list
+  it("should not share a non-existent shopping list with a user", async () => {
+    await supertest(app)
+      .put(`/shopping-list/${nonExistentId}/share`)
+      .send({ userId: "user123" })
+      .expect(404); // Not Found
+  });
+
+  // Test for unsharing a non-existent shopping list
+  it("should not unshare a non-existent shopping list with a user", async () => {
+    await supertest(app)
+      .delete(`/shopping-list/${nonExistentId}/share`)
+      .send({ userId: "user123" })
+      .expect(404); // Not Found
+  });
+
+  // Test for deleting a non-existent shopping list
+  it("should not delete a non-existent shopping list", async () => {
+    await supertest(app).delete(`/shopping-list/${nonExistentId}`).expect(404); // Not Found
+  });
+});
+

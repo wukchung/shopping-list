@@ -1,7 +1,7 @@
 const Joi = require('joi');
 
 const name = Joi.string().required();
-const listId = Joi.string().required();
+const listId = Joi.string().hex().length(24).required();
 const itemName = Joi.string().required();
 
 const createShoppingListSchema = Joi.object({
